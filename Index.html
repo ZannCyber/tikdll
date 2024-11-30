@@ -49,6 +49,13 @@
         .card.show {
             display: block;
         }
+	    .ads-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%; /* Pusatkan secara horizontal */
+            transform: translateX(-50%);
+            z-index: 9999; /* Supaya di atas elemen lain */
+	    }
         .popup {
             position: fixed;
             top: 0;
@@ -224,15 +231,17 @@
       }
     }
      </script>
-	<script type="text/javascript">
-	atOptions = {
-		'key' : 'bc135edf44607de12d3eb98a21c877dd',
-		'format' : 'iframe',
-		'height' : 250,
-		'width' : 50,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/bc135edf44607de12d3eb98a21c877dd/invoke.js"></script>
+	  <div class="ads-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key': 'bc135edf44607de12d3eb98a21c877dd',
+                'format': 'iframe',
+                'height': 250,
+                'width': 50,
+                'params': {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/bc135edf44607de12d3eb98a21c877dd/invoke.js"></script>
+	  </div>
 </body>
 </html>
