@@ -37,7 +37,6 @@
         .container:hover {
             box-shadow: 0 8px 19px rgba(12,12,12,0.883);
         }
-
         /* Animasi Warna Teks */
         h1 {
             font-size: 2.5rem;
@@ -48,15 +47,23 @@
             -webkit-text-fill-color: transparent;
             animation: gradientText 5s infinite;
         }
-
         @keyframes gradientText {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         input[type="url"] {
             width: 100%;
+            padding: 15px;
+            box-shadow: 0 8px 19px rgba(12,12,12,0.883);
+            border: 2px solid #5c0e7a;
+            border-radius: 20px;
+            box-sizing: border-box;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 40%;
             padding: 15px;
             box-shadow: 0 8px 19px rgba(12,12,12,0.883);
             border: 2px solid #5c0e7a;
@@ -81,6 +88,10 @@
         }
         button:hover {
             background: linear-gradient(to right, #4819e6, #121212a1);
+        }
+        button:disabled {
+            background: linear-gradient(to right, #888, #555);
+            cursor: not-allowed;
         }
         .card {
             display: none;
@@ -165,7 +176,13 @@
         <h1>TikTok Downloader</h1>
         <form id="downloadForm">
             <input type="url" id="videoUrl" placeholder="Masukkan URL TikTok" required>
-            <button type="submit">Download</button>
+            <div id="captcha-section">
+                <div id="captcha"></div>
+                <input type="text" id="captcha-input" placeholder="Enter CAPTCHA here">
+                <button type="button" onclick="validateCaptcha()">Verify CAPTCHA</button>
+                <p id="captcha-message"></p>
+            </div>
+            <button type="submit" id="submitButton" disabled>Download</button>
         </form>
         <div class="card" id="resultCard">
             <h3 id="videoTitle"></h3>
@@ -191,12 +208,45 @@
                 popup.style.display = 'none';
             }, 500);
         }
+
+        // CAPTCHA Logic
+        let currentCaptcha = generateCaptcha();
+
+        function generateCaptcha() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            let captcha = "";
+            for (let i = 0; i < 6; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                captcha += chars[randomIndex];
+            }
+            document.getElementById("captcha").textContent = captcha;
+            return captcha;
+        }
+
+        function validateCaptcha() {
+            const userInput = document.getElementById("captcha-input").value;
+            const messageElement = document.getElementById("captcha-message");
+            const submitButton = document.getElementById("submitButton");
+
+            if (userInput === currentCaptcha) {
+                messageElement.textContent = "CAPTCHA verified successfully!";
+                messageElement.style.color = "green";
+                submitButton.disabled = false; // Aktifkan tombol Download
+            } else {
+                messageElement.textContent = "Invalid CAPTCHA. Please try again.";
+                messageElement.style.color = "red";
+                currentCaptcha = generateCaptcha(); // Regenerate CAPTCHA
+            }
+        }
+
+        // Form Submission Logic
         const form = document.getElementById('downloadForm');
         const resultCard = document.getElementById('resultCard');
         const videoTitle = document.getElementById('videoTitle');
         const author = document.getElementById('author');
         const downloadVideo = document.getElementById('downloadVideo');
         const downloadAudio = document.getElementById('downloadAudio');
+
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
             const videoUrl = document.getElementById('videoUrl').value;
@@ -225,5 +275,57 @@
             }
         });
     </script>
+    <script>function checkConnectionStatus() {
+        if (navigator.onLine) {
+            console.log("You are online");
+        } else {
+            console.log("You are offline");
+        }
+    }
+    
+    // Cek status saat halaman dimuat
+    checkConnectionStatus();
+    
+    // Tambahkan event listener untuk perubahan status
+    window.addEventListener("online", () => {
+        console.log("Back online!");
+    });
+    
+    window.addEventListener("offline", () => {
+        console.log("Offline mode activated.");
+    });</script>
+    <script>function detectScreenOrientation() {
+        if (window.orientation === 0 || window.orientation === 180) {
+            console.log("Portrait mode detected");
+        } else if (window.orientation === 90 || window.orientation === -90) {
+            console.log("Landscape mode detected");
+        }
+    }
+    
+    // Cek orientasi saat halaman dimuat
+    detectScreenOrientation();
+    
+    
+    window.addEventListener("orientationchange", detectScreenOrientation);</script>
+    <script>
+
+        document.getElementById('detectIpBtn').addEventListener('click', async () => {
+            try {
+                
+                const response = await fetch('http://ip-api.com/json');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch IP data');
+                }
+        
+                const data = await response.json();
+        
+            
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('result').textContent = 'Error: Unable to detect IP or location.';
+            }
+        });</script>
 </body>
 </html>
