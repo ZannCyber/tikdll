@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Downloader - TIKDLL/title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>TikTok Downloader - SnapTok</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             background: linear-gradient(135deg, #1e3a8a, #0f172a);
             min-height: 100vh;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', Arial, sans-serif;
             color: #f1f5f9;
             display: flex;
             flex-direction: column;
@@ -33,6 +37,10 @@
             width: 40px;
             height: 40px;
         }
+        .navbar h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
         .dashboard {
             max-width: 1000px;
             width: 100%;
@@ -43,6 +51,12 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             padding: 40px;
             animation: fadeIn 0.8s ease-in-out;
+        }
+        .dashboard h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
         }
         .input-container {
             display: flex;
@@ -72,6 +86,7 @@
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 16px;
             transition: all 0.3s ease;
         }
         .input-container button:hover {
@@ -113,6 +128,11 @@
             border-radius: 12px;
             margin-bottom: 10px;
         }
+        .result-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
         .download-btn {
             display: inline-flex;
             align-items: center;
@@ -123,6 +143,7 @@
             text-decoration: none;
             border-radius: 8px;
             font-weight: 500;
+            font-size: 14px;
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -145,6 +166,13 @@
         }
         .stat-item:hover {
             transform: scale(1.05);
+        }
+        .stat-item i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-item p {
+            font-size: 1rem;
         }
         .footer {
             background: rgba(15, 23, 42, 0.95);
@@ -179,6 +207,9 @@
                 padding: 20px;
                 margin: 10px;
             }
+            .dashboard h1 {
+                font-size: 1.75rem;
+            }
             .input-container {
                 flex-direction: column;
             }
@@ -193,6 +224,9 @@
             .navbar {
                 padding: 10px 20px;
             }
+            .navbar h1 {
+                font-size: 1.25rem;
+            }
             .download-btn {
                 width: 100%;
                 justify-content: center;
@@ -202,6 +236,9 @@
             .result-card {
                 padding: 15px;
             }
+            .result-card h2 {
+                font-size: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -209,54 +246,54 @@
     <nav class="navbar">
         <div class="logo">
             <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="SnapTok Logo">
-            <h1 class="text-2xl font-bold">TIKDLL</h1>
+            <h1>SnapTok</h1>
         </div>
     </nav>
 
     <div class="dashboard">
-        <h1 class="text-4xl font-bold text-center mb-8">Download TikTok Videos & Music</h1>
+        <h1>Download TikTok Videos & Music</h1>
         <div class="input-container">
             <input type="text" id="tiktokUrl" placeholder="Enter TikTok Video URL (e.g., https://vt.tiktok.com/...)" />
-            <button onclick="downloadContent()"><i class="fas fa-download mr-2"></i>Download</button>
+            <button onclick="downloadContent()"><i class="fas fa-download"></i> Download</button>
         </div>
         <div class="loading" id="loading">
             <div class="loader"></div>
-            <p class="mt-3 text-lg">Processing your request...</p>
+            <p>Processing your request...</p>
         </div>
         <div class="result" id="result">
             <div class="result-card">
-                <h2 class="text-2xl font-semibold mb-4">Video Details</h2>
+                <h2>Video Details</h2>
                 <img id="videoCover" alt="Video Cover" />
-                <p id="videoDesc" class="mt-3 text-lg"></p>
-                <p id="authorName" class="mt-2 text-gray-300"></p>
-                <a id="downloadVideoLink" class="download-btn mt-4"><i class="fas fa-video"></i>Download Video</a>
+                <p id="videoDesc"></p>
+                <p id="authorName"></p>
+                <a id="downloadVideoLink" class="download-btn"><i class="fas fa-video"></i> Download Video</a>
             </div>
             <div class="result-card">
-                <h2 class="text-2xl font-semibold mb-4">Music Details</h2>
-                <p id="musicTitle" class="mt-3 text-lg"></p>
-                <p id="musicAuthor" class="mt-2 text-gray-300"></p>
-                <a id="downloadMusicLink" class="download-btn mt-4"><i class="fas fa-music"></i>Download Music</a>
+                <h2>Music Details</h2>
+                <p id="musicTitle"></p>
+                <p id="musicAuthor"></p>
+                <a id="downloadMusicLink" class="download-btn"><i class="fas fa-music"></i> Download Music</a>
             </div>
             <div class="stats">
                 <div class="stat-item">
-                    <i class="fas fa-heart text-2xl text-red-400 mb-2"></i>
-                    <p id="diggCount" class="font-semibold"></p>
-                    <p class="text-gray-400">Likes</p>
+                    <i class="fas fa-heart" style="color: #f87171;"></i>
+                    <p id="diggCount"></p>
+                    <p style="color: #9ca3af;">Likes</p>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-comment text-2xl text-blue-400 mb-2"></i>
-                    <p id="commentCount" class="font-semibold"></p>
-                    <p class="text-gray-400">Comments</p>
+                    <i class="fas fa-comment" style="color: #60a5fa;"></i>
+                    <p id="commentCount"></p>
+                    <p style="color: #9ca3af;">Comments</p>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-share text-2xl text-green-400 mb-2"></i>
-                    <p id="shareCount" class="font-semibold"></p>
-                    <p class="text-gray-400">Shares</p>
+                    <i class="fas fa-share" style="color: #4ade80;"></i>
+                    <p id="shareCount"></p>
+                    <p style="color: #9ca3af;">Shares</p>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-eye text-2xl text-purple-400 mb-2"></i>
-                    <p id="playCount" class="font-semibold"></p>
-                    <p class="text-gray-400">Views</p>
+                    <i class="fas fa-eye" style="color: #a78bfa;"></i>
+                    <p id="playCount"></p>
+                    <p style="color: #9ca3af;">Views</p>
                 </div>
             </div>
         </div>
@@ -285,7 +322,7 @@
             const playCount = document.getElementById('playCount');
 
             if (!urlInput || !urlInput.includes('tiktok.com')) {
-                alert('Please enter a valid TikTok video URL');
+                alert('Masukkan URL video TikTok yang valid');
                 return;
             }
 
@@ -301,21 +338,21 @@
                     result.style.display = 'block';
 
                     // Video Details
-                    videoDesc.textContent = `Description: ${data.data.desc || 'No description available'}`;
-                    authorName.textContent = `Author: ${data.data.author.nickname || 'Unknown'}`;
+                    videoDesc.textContent = `Deskripsi: ${data.data.desc || 'Tidak ada deskripsi'}`;
+                    authorName.textContent = `Pembuat: ${data.data.author.nickname || 'Tidak diketahui'}`;
                     videoCover.src = data.data.video.cover.url_list[0] || '';
                     downloadVideoLink.setAttribute('data-href', data.data.video.download_addr.url_list[0] || '#');
                     downloadVideoLink.setAttribute('data-filename', `tikdll_zannmods_${data.data.aweme_id}.mp4`);
 
                     // Music Details
                     if (data.data.music && data.data.music.play_url.url_list.length > 0) {
-                        musicTitle.textContent = `Title: ${data.data.music.title || 'Original Sound'}`;
-                        musicAuthor.textContent = `Author: ${data.data.music.author || 'Unknown'}`;
+                        musicTitle.textContent = `Judul: ${data.data.music.title || 'Suara Asli'}`;
+                        musicAuthor.textContent = `Pembuat: ${data.data.music.author || 'Tidak diketahui'}`;
                         downloadMusicLink.setAttribute('data-href', data.data.music.play_url.url_list[0]);
                         downloadMusicLink.setAttribute('data-filename', `tiktok_music_${data.data.music.id}.mp3`);
                         downloadMusicLink.style.display = 'inline-flex';
                     } else {
-                        musicTitle.textContent = 'Music: Not available';
+                        musicTitle.textContent = 'Musik: Tidak tersedia';
                         musicAuthor.textContent = '';
                         downloadMusicLink.style.display = 'none';
                     }
@@ -326,17 +363,17 @@
                     shareCount.textContent = data.data.statistics.share_count || '0';
                     playCount.textContent = data.data.statistics.play_count || '0';
 
-                    // Auto-download video and music
+                    // Auto-download
                     triggerDownload(downloadVideoLink);
                     if (data.data.music && data.data.music.play_url.url_list.length > 0) {
                         triggerDownload(downloadMusicLink);
                     }
                 } else {
-                    throw new Error(data.message || 'Failed to fetch video data');
+                    throw new Error(data.message || 'Gagal mengambil data video');
                 }
             } catch (error) {
                 loading.style.display = 'none';
-                alert('Error fetching data: ' + error.message);
+                alert('Error mengambil data: ' + error.message);
             }
         }
 
@@ -353,7 +390,6 @@
             }
         }
 
-        // Add event listeners for download buttons
         document.getElementById('downloadVideoLink').addEventListener('click', (e) => {
             e.preventDefault();
             triggerDownload(e.currentTarget);
@@ -364,5 +400,5 @@
             triggerDownload(e.currentTarget);
         });
     </script>
-</body>
+</bodyMc>
 </html>
