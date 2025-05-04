@@ -266,13 +266,13 @@
                 <img id="videoCover" alt="Sampul Video" />
                 <p id="videoDesc"></p>
                 <p id="authorName"></p>
-                <a id="downloadVideoLink" class="download-btn"><i class="fas fa-video"></i> Unduh Video</a>
+                <button id="downloadVideoLink" class="download-btn"><i class="fas fa-video"></i> Unduh Video</button>
             </div>
             <div class="result-card">
                 <h2>Detail Musik</h2>
                 <p id="musicTitle"></p>
                 <p id="musicAuthor"></p>
-                <a id="downloadMusicLink" class="download-btn"><i class="fas fa-music"></i> Unduh Musik</a>
+                <button id="downloadMusicLink" class="download-btn"><i class="fas fa-music"></i> Unduh Musik</button>
             </div>
             <div class="stats">
                 <div class="stat-item">
@@ -371,27 +371,41 @@
             }
         }
 
-        function triggerDownload(element) {
+        async function triggerDownload(element) {
             const href = element.getAttribute('data-href');
             const filename = element.getAttribute('data-filename');
             if (href && href !== '#') {
-                const a = document.createElement('a');
-                a.href = href;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                try {
+                    const response = await fetch(href, {
+                        method: 'GET',
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                            'Referer': 'https://www.tiktok.com/'
+                        }
+                    });
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                } catch (error) {
+                    alert('Gagal mengunduh: ' + error.message);
+                }
             }
         }
 
-        document.getElementById('downloadVideoLink').addEventListener('click', (e) => {
+        document.getElementById('downloadVideoLink').addEventListener('click', async (e) => {
             e.preventDefault();
-            triggerDownload(e.currentTarget);
+            await triggerDownload(e.currentTarget);
         });
 
-        document.getElementById('downloadMusicLink').addEventListener('click', (e) => {
+        document.getElementById('downloadMusicLink').addEventListener('click', async (e) => {
             e.preventDefault();
-            triggerDownload(e.currentTarget);
+            await triggerDownload(e.currentTarget);
         });
     </script>
 </body>
