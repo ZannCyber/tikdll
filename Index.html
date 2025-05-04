@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Downloader - SnapTok</title>
+    <title>TikTok Downloader - TIKDLL/title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
@@ -124,6 +124,7 @@
             border-radius: 8px;
             font-weight: 500;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         .download-btn:hover {
             background: linear-gradient(90deg, #2563eb, #3b82f6);
@@ -183,12 +184,23 @@
             }
             .input-container input, .input-container button {
                 width: 100%;
+                font-size: 14px;
+                padding: 12px;
             }
             .stats {
                 grid-template-columns: 1fr;
             }
             .navbar {
                 padding: 10px 20px;
+            }
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px;
+                font-size: 14px;
+            }
+            .result-card {
+                padding: 15px;
             }
         }
     </style>
@@ -197,7 +209,7 @@
     <nav class="navbar">
         <div class="logo">
             <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="SnapTok Logo">
-            <h1 class="text-2xl font-bold">SnapTok</h1>
+            <h1 class="text-2xl font-bold">TIKDLL</h1>
         </div>
     </nav>
 
@@ -217,13 +229,13 @@
                 <img id="videoCover" alt="Video Cover" />
                 <p id="videoDesc" class="mt-3 text-lg"></p>
                 <p id="authorName" class="mt-2 text-gray-300"></p>
-                <a id="downloadVideoLink" class="download-btn mt-4" href="#" onclick="triggerDownload('video')"><i class="fas fa-video"></i>Download Video</a>
+                <a id="downloadVideoLink" class="download-btn mt-4"><i class="fas fa-video"></i>Download Video</a>
             </div>
             <div class="result-card">
                 <h2 class="text-2xl font-semibold mb-4">Music Details</h2>
                 <p id="musicTitle" class="mt-3 text-lg"></p>
                 <p id="musicAuthor" class="mt-2 text-gray-300"></p>
-                <a id="downloadMusicLink" class="download-btn mt-4" href="#" onclick="triggerDownload('music')"><i class="fas fa-music"></i>Download Music</a>
+                <a id="downloadMusicLink" class="download-btn mt-4"><i class="fas fa-music"></i>Download Music</a>
             </div>
             <div class="stats">
                 <div class="stat-item">
@@ -251,7 +263,7 @@
     </div>
 
     <footer class="footer">
-        <p>&copy; 2025 TIKDLL. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>© 2025 TIKDLL. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
         <p>Powered by <a href="https://www.zannmods.site" target="_blank">zannmods</a></p>
     </footer>
 
@@ -292,15 +304,15 @@
                     videoDesc.textContent = `Description: ${data.data.desc || 'No description available'}`;
                     authorName.textContent = `Author: ${data.data.author.nickname || 'Unknown'}`;
                     videoCover.src = data.data.video.cover.url_list[0] || '';
-                    downloadVideoLink.href = data.data.video.download_addr.url_list[0] || '#';
-                    downloadVideoLink.download = `tikdll_zannmods_${data.data.aweme_id}.mp4`;
+                    downloadVideoLink.setAttribute('data-href', data.data.video.download_addr.url_list[0] || '#');
+                    downloadVideoLink.setAttribute('data-filename', `tikdll_zannmods_${data.data.aweme_id}.mp4`);
 
                     // Music Details
                     if (data.data.music && data.data.music.play_url.url_list.length > 0) {
                         musicTitle.textContent = `Title: ${data.data.music.title || 'Original Sound'}`;
                         musicAuthor.textContent = `Author: ${data.data.music.author || 'Unknown'}`;
-                        downloadMusicLink.href = data.data.music.play_url.url_list[0];
-                        downloadMusicLink.download = `tiktok_music_${data.data.music.id}.mp3`;
+                        downloadMusicLink.setAttribute('data-href', data.data.music.play_url.url_list[0]);
+                        downloadMusicLink.setAttribute('data-filename', `tiktok_music_${data.data.music.id}.mp3`);
                         downloadMusicLink.style.display = 'inline-flex';
                     } else {
                         musicTitle.textContent = 'Music: Not available';
@@ -314,10 +326,10 @@
                     shareCount.textContent = data.data.statistics.share_count || '0';
                     playCount.textContent = data.data.statistics.play_count || '0';
 
-                    // Auto-download video
-                    triggerDownload('video');
+                    // Auto-download video and music
+                    triggerDownload(downloadVideoLink);
                     if (data.data.music && data.data.music.play_url.url_list.length > 0) {
-                        triggerDownload('music');
+                        triggerDownload(downloadMusicLink);
                     }
                 } else {
                     throw new Error(data.message || 'Failed to fetch video data');
@@ -328,17 +340,29 @@
             }
         }
 
-        function triggerDownload(type) {
-            const link = type === 'video' ? document.getElementById('downloadVideoLink') : document.getElementById('downloadMusicLink');
-            if (link.href !== '#') {
+        function triggerDownload(element) {
+            const href = element.getAttribute('data-href');
+            const filename = element.getAttribute('data-filename');
+            if (href && href !== '#') {
                 const a = document.createElement('a');
-                a.href = link.href;
-                a.download = link.download;
+                a.href = href;
+                a.download = filename;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
             }
         }
+
+        // Add event listeners for download buttons
+        document.getElementById('downloadVideoLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            triggerDownload(e.currentTarget);
+        });
+
+        document.getElementById('downloadMusicLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            triggerDownload(e.currentTarget);
+        });
     </script>
 </body>
 </html>
