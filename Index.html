@@ -3,28 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Downloader - Download Video TikTok Tanpa Watermark</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta name="description" content="Unduh video TikTok tanpa watermark dalam kualitas HD secara cepat dan mudah">
+    <title>TikTok Downloader - Unduh Video Tanpa Watermark</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Previous CSS remains largely the same, with some enhancements */
         :root {
             --primary-color: #4facfe;
             --secondary-color: #f5576c;
             --text-color: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.15);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             overflow-x: hidden;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
             position: relative;
@@ -33,72 +50,159 @@
 
         .header {
             text-align: center;
-            margin-bottom: 50px;
+            margin: 40px 0;
             animation: fadeInDown 1s ease-out;
         }
 
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .logo {
-            font-size: 3.5rem;
-            font-weight: 900;
+            font-size: clamp(2.5rem, 6vw, 3.2rem);
+            font-weight: 800;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: textGradient 3s ease-in-out infinite;
-            margin-bottom: 10px;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: textGradient 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        @keyframes textGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 15px auto 0;
         }
 
         .main-card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeInUp 1s ease-out 0.3s both;
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: clamp(20px, 5vw, 30px);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            animation: fadeInUp 1s ease-out 0.2s both;
             position: relative;
             overflow: hidden;
         }
 
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
         .input-field {
             width: 100%;
-            padding: 20px 25px;
-            font-size: 1.1rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            font-size: 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background: rgba(255, 255, 255, 0.08);
             color: var(--text-color);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
             outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+            transform: translateY(-2px);
         }
 
         .download-btn {
             width: 100%;
-            padding: 20px;
-            font-size: 1.2rem;
+            padding: 15px;
+            font-size: 1.1rem;
             font-weight: 600;
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: var(--text-color);
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid var(--text-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .progress-bar {
             display: none;
             width: 100%;
-            height: 5px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 4px;
+            margin-top: 15px;
             overflow: hidden;
         }
 
@@ -109,7 +213,198 @@
             transition: width 0.3s ease;
         }
 
-        /* Rest of the previous CSS remains */
+        .error-message {
+            display: none;
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            color: #ff6b6b;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .results {
+            display: none;
+            margin-top: 30px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .video-info {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .video-details {
+            text-align: center;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .download-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .download-option {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .download-option:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .option-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .option-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .option-size {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .download-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .main-card {
+                padding: 20px;
+            }
+
+            .download-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .input-field {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+
+            .download-btn {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .video-title {
+                font-size: 1rem;
+            }
+        }
+
+        /* Accessibility */
+        .input-field:focus-visible,
+        .download-btn:focus-visible,
+        .download-link:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
@@ -119,7 +414,7 @@
             <h1 class="logo">
                 <i class="fab fa-tiktok"></i> TikTok Downloader
             </h1>
-            <p class="subtitle">Unduh video TikTok tanpa watermark dalam kualitas HD secara cepat dan mudah</p>
+            <p class="subtitle">Unduh video dan audio TikTok tanpa watermark dengan kualitas terbaik, cepat, dan gratis</p>
         </div>
 
         <div class="main-card">
@@ -131,11 +426,12 @@
                         class="input-field"
                         placeholder="Masukkan URL TikTok (contoh: https://vt.tiktok.com/ZSk3Co1R9/)"
                         required
+                        aria-label="URL TikTok"
                     >
                 </div>
                 <button type="submit" class="download-btn" id="downloadBtn">
                     <span id="btnText">
-                        <i class="fas fa-download"></i> Download Video
+                        <i class="fas fa-download"></i> Unduh Sekarang
                     </span>
                     <div class="loading-spinner" id="loadingSpinner"></div>
                 </button>
@@ -144,7 +440,7 @@
                 </div>
             </form>
 
-            <div class="error-message" id="errorMessage"></div>
+            <div class="error-message" id="errorMessage" role="alert"></div>
 
             <div class="results" id="results">
                 <div class="video-info" id="videoInfo"></div>
@@ -153,31 +449,23 @@
     </div>
 
     <script>
-        // Create floating particles
+        // Performance-optimized particle creation
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+            const particleCount = Math.min(30, window.innerWidth / 20);
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 8}s`;
+                particle.style.animationDuration = `${Math.random() * 4 + 6}s`;
                 particlesContainer.appendChild(particle);
             }
         }
 
         function sanitizeFileName(name) {
-            return name.replace(/[^\w\s-]/gi, '').replace(/\s+/g, '_');
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            return name.replace(/[^\w\s-]/gi, '').replace(/\s+/g, '_').slice(0, 100);
         }
 
         function showLoading() {
@@ -194,7 +482,7 @@
 
         function updateProgress(progress) {
             const progressBarFill = document.getElementById('progressBarFill');
-            progressBarFill.style.width = `${progress}%`;
+            progressBarFill.style.width = `${Math.min(progress, 100)}%`;
         }
 
         function hideLoading() {
@@ -226,93 +514,78 @@
             const videoData = data.result;
 
             videoInfoDiv.innerHTML = `
-                <div class="video-preview">
-                    <div class="video-details">
-                        <h3 class="video-title">${videoData.title || 'Video TikTok'}</h3>
-                        <div class="author-info">
-                            <div>
-                                <div class="author-name">@${videoData.author}</div>
-                            </div>
-                        </div>
+                <div class="video-details">
+                    <h3 class="video-title">${videoData.title || 'Video TikTok'}</h3>
+                    <div class="author-info">
+                        <div class="author-name">@${videoData.author}</div>
                     </div>
                 </div>
                 <div class="download-options">
                     <div class="download-option">
-                        <div class="option-title"><i class="fas fa-video"></i> Video HD (Tanpa Watermark)</div>
-                        <div class="option-desc">Kualitas terbaik tanpa logo TikTok</div>
-                        <button onclick="downloadFile('${videoData.result}', 'video_no_watermark.mp4')" class="download-link">
-                            <i class="fas fa-download"></i> Download Video
+                        <div class="option-title"><i class="fas fa-video"></i> Video HD</div>
+                        <div class="option-desc">Video tanpa watermark dalam kualitas terbaik</div>
+                        <button onclick="downloadFile('${videoData.result}', 'tiktok_video_${sanitizeFileName(videoData.title || 'video')}.mp4')" class="download-link" aria-label="Unduh Video HD">
+                            <i class="fas fa-download"></i> Unduh Video
                         </button>
                     </div>
                     <div class="download-option">
-                        <div class="option-title"><i class="fas fa-music"></i> Audio/Musik</div>
-                        <div class="option-desc">${videoData.title || 'TikTok Audio'}</div>
-                        <div class="option-size">MP3 Audio</div>
-                        <button onclick="downloadFile('${videoData.audio}', '${sanitizeFileName(videoData.title || 'tiktok_audio')}.mp3')" class="download-link">
-                            <i class="fas fa-download"></i> Download Audio
+                        <div class="option-title"><i class="fas fa-music"></i> Audio MP3</div>
+                        <div class="option-desc">${videoData.title || 'Audio TikTok'}</div>
+                        <button onclick="downloadFile('${videoData.audio}', 'tiktok_audio_${sanitizeFileName(videoData.title || 'audio')}.mp3')" class="download-link" aria-label="Unduh Audio MP3">
+                            <i class="fas fa-download"></i> Unduh Audio
                         </button>
                     </div>
                 </div>
             `;
             resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function downloadFile(url, filename) {
+        async function downloadFile(url, filename) {
             showLoading();
             updateProgress(0);
 
-            fetch(url, {
-                mode: 'cors'
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error('Download failed');
-                    const contentLength = response.headers.get('content-length');
-                    let loaded = 0;
+            try {
+                const response = await fetch(url, { mode: 'cors' });
+                if (!response.ok) throw new Error('Gagal mengunduh file');
 
-                    const reader = response.body.getReader();
-                    return new ReadableStream({
-                        async start(controller) {
-                            while (true) {
-                                const { done, value } = await reader.read();
-                                if (done) {
-                                    controller.close();
-                                    break;
-                                }
-                                loaded += value.byteLength;
-                                if (contentLength) {
-                                    updateProgress((loaded / contentLength) * 100);
-                                }
-                                controller.enqueue(value);
-                            }
-                        }
-                    });
-                })
-                .then(stream => new Response(stream))
-                .then(response => response.blob())
-                .then(blob => {
-                    const blobUrl = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                    URL.revokeObjectURL(blobUrl);
-                    hideLoading();
-                })
-                .catch(error => {
-                    console.error('Download error:', error);
-                    showError('Gagal mendownload file. Silakan coba lagi.');
-                    hideLoading();
-                });
+                const contentLength = response.headers.get('content-length');
+                let loaded = 0;
+                const chunks = [];
+
+                const reader = response.body.getReader();
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    loaded += value.byteLength;
+                    if (contentLength) {
+                        updateProgress((loaded / contentLength) * 100);
+                    }
+                }
+
+                const blob = new Blob(chunks);
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                console.error('Download error:', error);
+                showError('Gagal mengunduh file. Silakan coba lagi.');
+            } finally {
+                hideLoading();
+            }
         }
 
         document.getElementById('downloadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const url = document.getElementById('tiktokUrl').value.trim();
-
-            if (!url) {
+            if (!url || !url.match(/^https?:\/\/\S+$/)) {
                 showError('Silakan masukkan URL TikTok yang valid!');
                 return;
             }
@@ -322,30 +595,34 @@
             showLoading();
 
             try {
-                const apiUrl = `https://zhpiss.vercel.app/api/tiktok?url=${encodeURIComponent(url)}`;
+                const apiUrl = `https://zhpisz.vercel.app/api/tiktok?url=${encodeURIComponent(url)}`;
                 const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('Gagal mengakses API');
                 const data = await response.json();
 
                 if (data.result) {
                     displayResults(data);
                 } else {
-                    throw new Error('Gagal mengunduh video');
+                    throw new Error(data.message || 'Gagal mengunduh video');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showError('Terjadi kesalahan saat mengunduh video. Pastikan URL TikTok valid dan coba lagi.');
+                showError('Gagal mengunduh video. Pastikan URL valid atau coba lagi nanti.');
             } finally {
                 hideLoading();
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
             createParticles();
+            // Prefill input for demo if needed
+            // document.getElementById('tiktokUrl').value = 'https://vt.tiktok.com/ZSk3Co1R9/';
         });
 
-        // Ripple effect for buttons
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('download-link')) {
+        // Ripple effect
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.download-btn, .download-link')) {
                 const ripple = document.createElement('span');
                 const rect = e.target.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
@@ -358,30 +635,32 @@
                     height: ${size}px;
                     left: ${x}px;
                     top: ${y}px;
-                    background: rgba(255, 255, 255, 0.3);
+                    background: rgba(255,255,255,0.3);
                     border-radius: 50%;
                     transform: scale(0);
-                    animation: ripple 0.6s ease-out;
+                    animation: ripple 0.5s ease-out;
                     pointer-events: none;
                 `;
-
                 e.target.style.position = 'relative';
                 e.target.style.overflow = 'hidden';
                 e.target.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
+                setTimeout(() => ripple.remove(), 500);
             }
         });
 
-        const style = document.createElement('style');
-        style.textContent = `
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
             @keyframes ripple {
-                to {
-                    transform: scale(2);
-                    opacity: 0;
-                }
+                to { transform: scale(2); opacity: 0; }
             }
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(styleSheet);
+
+        // Optimize particle count on resize
+        window.addEventListener('resize', () => {
+            document.getElementById('particles').innerHTML = '';
+            createParticles();
+        });
     </script>
 </body>
 </html>
