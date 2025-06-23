@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Unduh video TikTok tanpa watermark dalam kualitas HD secara cepat dan mudah">
+    <meta name="description" content="Unduh video TikTok tanpa watermark dalam kualitas HD secara cepat, mudah, dan gratis">
     <title>TikTok Downloader - Unduh Video Tanpa Watermark</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,6 +15,9 @@
             --card-bg: rgba(255, 255, 255, 0.15);
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             --border: rgba(255, 255, 255, 0.2);
+            --error-bg: rgba(255, 107, 107, 0.2);
+            --error-border: rgba(255, 107, 107, 0.4);
+            --error-text: #ff6b6b;
         }
 
         * {
@@ -124,10 +127,14 @@
         .input-group {
             position: relative;
             margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .input-field {
-            width: 100%;
+            flex: 1;
+            min-width: 200px;
             padding: 15px 20px;
             font-size: 1rem;
             border-radius: 12px;
@@ -146,6 +153,22 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
             transform: translateY(-2px);
+        }
+
+        .paste-btn {
+            padding: 15px 20px;
+            font-size: 1rem;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .paste-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(79, 172, 254, 0.3);
         }
 
         .download-btn {
@@ -215,14 +238,21 @@
 
         .error-message {
             display: none;
-            background: rgba(255, 107, 107, 0.2);
-            border: 1px solid rgba(255, 107, 107, 0.4);
-            color: #ff6b6b;
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            color: var(--error-text);
             padding: 12px;
             border-radius: 10px;
             margin-top: 15px;
             text-align: center;
             font-size: 0.9rem;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         .results {
@@ -303,13 +333,6 @@
             margin-bottom: 10px;
         }
 
-        .option-size {
-            color: var(--primary-color);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-        }
-
         .download-link {
             display: inline-flex;
             align-items: center;
@@ -369,6 +392,10 @@
                 padding: 20px;
             }
 
+            .input-group {
+                flex-direction: column;
+            }
+
             .download-options {
                 grid-template-columns: 1fr;
             }
@@ -383,7 +410,7 @@
                 font-size: 0.9rem;
             }
 
-            .input-field {
+            .input-field, .paste-btn {
                 padding: 12px 15px;
                 font-size: 0.9rem;
             }
@@ -400,6 +427,7 @@
 
         /* Accessibility */
         .input-field:focus-visible,
+        .paste-btn:focus-visible,
         .download-btn:focus-visible,
         .download-link:focus-visible {
             outline: 3px solid var(--primary-color);
@@ -428,6 +456,9 @@
                         required
                         aria-label="URL TikTok"
                     >
+                    <button type="button" class="paste-btn" id="pasteBtn" aria-label="Tempel URL dari clipboard">
+                        <i class="fas fa-paste"></i> Tempel
+                    </button>
                 </div>
                 <button type="submit" class="download-btn" id="downloadBtn">
                     <span id="btnText">
@@ -449,11 +480,12 @@
     </div>
 
     <script>
-        // Performance-optimized particle creation
+        // Particle creation with performance optimization
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            const particleCount = Math.min(30, window.innerWidth / 20);
+            const particleCount = Math.min(30, Math.floor(window.innerWidth / 25));
 
+            particlesContainer.innerHTML = '';
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
@@ -502,10 +534,11 @@
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             setTimeout(() => {
                 errorDiv.style.display = 'none';
-            }, 5000);
+            }, 7000);
         }
 
         function displayResults(data) {
@@ -538,7 +571,7 @@
                 </div>
             `;
             resultsDiv.style.display = 'block';
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         async function downloadFile(url, filename) {
@@ -547,7 +580,7 @@
 
             try {
                 const response = await fetch(url, { mode: 'cors' });
-                if (!response.ok) throw new Error('Gagal mengunduh file');
+                if (!response.ok) throw new Error('Gagal mengunduh file: Server tidak merespons');
 
                 const contentLength = response.headers.get('content-length');
                 let loaded = 0;
@@ -560,7 +593,7 @@
                     chunks.push(value);
                     loaded += value.byteLength;
                     if (contentLength) {
-                        updateProgress((loaded / contentLength) * 100);
+                        updateProgress((loaded / parseInt(contentLength)) * 100);
                     }
                 }
 
@@ -575,7 +608,7 @@
                 URL.revokeObjectURL(blobUrl);
             } catch (error) {
                 console.error('Download error:', error);
-                showError('Gagal mengunduh file. Silakan coba lagi.');
+                showError(`Gagal mengunduh file: ${error.message}. Silakan coba lagi.`);
             } finally {
                 hideLoading();
             }
@@ -585,8 +618,12 @@
             e.preventDefault();
 
             const url = document.getElementById('tiktokUrl').value.trim();
-            if (!url || !url.match(/^https?:\/\/\S+$/)) {
-                showError('Silakan masukkan URL TikTok yang valid!');
+            if (!url) {
+                showError('URL tidak boleh kosong! Masukkan URL TikTok yang valid.');
+                return;
+            }
+            if (!url.match(/^https?:\/\/(www\.tiktok\.com|vt\.tiktok\.com)\/.+$/)) {
+                showError('URL tidak valid! Gunakan format seperti https://vt.tiktok.com/ZSk3Co1R9/');
                 return;
             }
 
@@ -596,33 +633,60 @@
 
             try {
                 const apiUrl = `https://zhpisz.vercel.app/api/tiktok?url=${encodeURIComponent(url)}`;
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error('Gagal mengakses API');
-                const data = await response.json();
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
+                const response = await fetch(apiUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    if (response.status === 429) {
+                        throw new Error('Terlalu banyak permintaan. Coba lagi dalam beberapa menit.');
+                    }
+                    throw new Error(`Gagal mengakses server (kode: ${response.status}).`);
+                }
+
+                const data = await response.json();
                 if (data.result) {
                     displayResults(data);
                 } else {
-                    throw new Error(data.message || 'Gagal mengunduh video');
+                    throw new Error(data.message || 'Data video tidak ditemukan.');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showError('Gagal mengunduh video. Pastikan URL valid atau coba lagi nanti.');
+                let message = 'Terjadi kesalahan saat mengunduh video. Pastikan URL valid atau coba lagi nanti.';
+                if (error.name === 'AbortError') {
+                    message = 'Permintaan terlalu lama. Periksa koneksi internet Anda.';
+                } else if (error.message.includes('429')) {
+                    message = error.message;
+                } else if (error.message.includes('Data video tidak ditemukan')) {
+                    message = 'Video tidak ditemukan atau tidak didukung. Pastikan URL benar.';
+                }
+                showError(message);
             } finally {
                 hideLoading();
+            }
+        });
+
+        // Paste button functionality
+        document.getElementById('pasteBtn').addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('tiktokUrl').value = text;
+                document.getElementById('tiktokUrl').focus();
+            } catch (error) {
+                showError('Gagal menempel dari clipboard. Silakan tempel secara manual.');
             }
         });
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
-            // Prefill input for demo if needed
-            // document.getElementById('tiktokUrl').value = 'https://vt.tiktok.com/ZSk3Co1R9/';
         });
 
         // Ripple effect
         document.addEventListener('click', (e) => {
-            if (e.target.matches('.download-btn, .download-link')) {
+            if (e.target.matches('.download-btn, .download-link, .paste-btn')) {
                 const ripple = document.createElement('span');
                 const rect = e.target.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
@@ -658,7 +722,6 @@
 
         // Optimize particle count on resize
         window.addEventListener('resize', () => {
-            document.getElementById('particles').innerHTML = '';
             createParticles();
         });
     </script>
