@@ -10,7 +10,7 @@
     <style>
         :root {
             --primary-color: #4facfe;
-            --secondary-color: #f5576c;
+            --secondary-color: #ebebfc;
             --text-color: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.15);
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -28,7 +28,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #171753 50%, #241f61 75%, #4facfe 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
@@ -84,7 +84,7 @@
         }
 
         .subtitle {
-            font-size: clamp(1rem, 3vw, 1.1rem);
+            font-size: 30px;
             color: rgba(255, 255, 255, 0.85);
             font-weight: 400;
             max-width: 600px;
@@ -433,18 +433,221 @@
             outline: 3px solid var(--primary-color);
             outline-offset: 2px;
         }
+      section {
+         min-height: 100vh;
+         padding: 6rem 2rem 2rem;
+         display: flex;
+          justify-content: center;
+         align-items: center;
+          flex-direction: column;
+          text-align: center;
+    }
+    /* Loader overlay full screen */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.3); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Loader animation (CSS kamu) */
+.three-body {
+ --uib-size: 35px;
+ --uib-speed: 0.8s;
+ --uib-color: #5D3FD3;
+ position: relative;
+ display: inline-block;
+ height: var(--uib-size);
+ width: var(--uib-size);
+ animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+}
+
+.three-body__dot {
+ position: absolute;
+ height: 100%;
+ width: 30%;
+}
+
+.three-body__dot:after {
+ content: '';
+ position: absolute;
+ height: 0%;
+ width: 100%;
+ padding-bottom: 100%;
+ background-color: var(--uib-color);
+ border-radius: 50%;
+}
+
+.three-body__dot:nth-child(1) {
+ bottom: 5%;
+ left: 0;
+ transform: rotate(60deg);
+ transform-origin: 50% 85%;
+}
+
+.three-body__dot:nth-child(1)::after {
+ bottom: 0;
+ left: 0;
+ animation: wobble1 var(--uib-speed) infinite ease-in-out;
+ animation-delay: calc(var(--uib-speed) * -0.3);
+}
+
+.three-body__dot:nth-child(2) {
+ bottom: 5%;
+ right: 0;
+ transform: rotate(-60deg);
+ transform-origin: 50% 85%;
+}
+
+.three-body__dot:nth-child(2)::after {
+ bottom: 0;
+ left: 0;
+ animation: wobble1 var(--uib-speed) infinite
+    calc(var(--uib-speed) * -0.15) ease-in-out;
+}
+
+.three-body__dot:nth-child(3) {
+ bottom: -5%;
+ left: 0;
+ transform: translateX(116.666%);
+}
+
+.three-body__dot:nth-child(3)::after {
+ top: 0;
+ left: 0;
+ animation: wobble2 var(--uib-speed) infinite ease-in-out;
+}
+
+@keyframes spin78236 {
+ 0% {
+  transform: rotate(0deg);
+ }
+
+ 100% {
+  transform: rotate(360deg);
+ }
+}
+
+@keyframes wobble1 {
+ 0%, 100% {
+  transform: translateY(0%) scale(1);
+  opacity: 1;
+ }
+
+ 50% {
+  transform: translateY(-66%) scale(0.65);
+  opacity: 0.8;
+ }
+}
+
+@keyframes wobble2 {
+ 0%, 100% {
+  transform: translateY(0%) scale(1);
+  opacity: 1;
+ }
+
+ 50% {
+  transform: translateY(66%) scale(0.65);
+  opacity: 0.8;
+ }
+}
+#txt-run {
+  color: #5D3FD3; 
+  font-weight: bold;
+}
+.bgblue {
+  background: linear-gradient(135deg, #fffffff5, #3a4b8a, #ffffff98);
+  padding: 1px;
+  border-radius: 1.2rem;
+  box-shadow: 0px 1rem 1.5rem -0.9rem #000000e1;
+  max-width: 300px;
+}
+
+.card {
+  font-size: 1rem;
+  color: #bec4cf;
+  background: linear-gradient(135deg, #0d1120 0%, #3a4b8a 43%, #0d1120 100%);
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+}
+.cardd-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.comment-card {
+  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, #0d1120 0%, #3a4b8a 43%, #0d1120 100%);
+  border-radius: 20px;
+  padding: 1rem;
+  max-width: 400px;
+  margin: 1rem auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.377);
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+
+.comment-header {
+  display: flex;
+  align-items: center;
+ 
+  margin-bottom: 0.5rem;
+}
+
+.comment-header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+  border: 2px solid rgba(40,37,37,0.489);
+}
+
+.comment-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.comment-header span {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.comment-text {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
     </style>
 </head>
 <body>
+  <!-- Loader -->
+  <div id="loader">
+    <div class="three-body">
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+    </div>
+  </div>
+</body>
+  <section>
     <div class="floating-particles" id="particles"></div>
     <div class="container">
         <div class="header">
             <h1 class="logo">
                 <i class="fab fa-tiktok"></i> TikTok Downloader
             </h1>
-            <p class="subtitle">Unduh video dan audio TikTok tanpa watermark dengan kualitas terbaik, cepat, dan gratis</p>
+            <p class="subtitle">Unduh video dan audio TikTok tanpa watermark dengan <span id="txt-run"></span></p>
         </div>
-
+</section>
+<section>
         <div class="main-card">
             <form id="downloadForm">
                 <div class="input-group">
@@ -478,7 +681,69 @@
             </div>
         </div>
     </div>
+</section>
+<section>
+    <div class="cardd-container">
+<div class="bgblue">
+  <div class="card">
+    website ini sudah kamii rilis dari tahun 2024 website ini terus dikembangkan,walaupun beberapa bulan yang lalu website ini sempat berhenti beroprasi, dan sekarang mulai bulan juni 2025 website ini akan di kembangkan terus menerus. ~fauzan dev
+  </div>
+</div>
+<div class="bgblue">
+  <div class="card">
+    kenapa anda harus menggunakan website ini? karna websitee inii tidak ada iklan sama sekali karna dev kami hanya ingin pengguna nya nyaman karna tidak ada iklan atau gangguan dan dev kami tidak memungut biaya sama sekali. ~fauzan dev
+  </div>
+</div>
+<div class="bgblue">
+  <div class="card">
+    website ini cukup ringan karna kami berkerja melalu api pihak ketiga tidak sepenuh nya dari kamiii, jadi ini yang membuat website ini ringan dan mudah diakses oleh siapa saja. ~fauzan dev
+  </div>
+</div>
+<div class="bgblue">
+  <div class="card">
+    proses cepat? yaaa website kamii cukup cepat untuk melakukan downloader walaupun website kami menggunakan api pihak ketiga kami akan berupaya terus menerus agar downloader kamii sangat cepat. ~fauzan dev
+  </div>
+</div>
+</div>
 
+</section>
+<section>
+      <div class="cardd-container">
+      <div class="comment-card">
+  <div class="comment-header">
+    <img src="https://i.pravatar.cc/150?img=29" alt="User">
+    <div>
+      <h4>holip</h4>
+      <span>2 jam lalu</span>
+    </div>
+  </div>
+  
+  <p class="comment-text">wihh proses nya lumayan cepat yahh ringan</p>
+</div>
+      <div class="comment-card">
+  <div class="comment-header">
+    <img src="https://i.pravatar.cc/150?img=8" alt="User">
+    <div>
+      <h4>rehan</h4>
+      <span>5 jam lalu</span>
+    </div>
+  </div>
+  
+  <p class="comment-text">ringan banget web nya ga ada iklan</p>
+</div>
+      <div class="comment-card">
+  <div class="comment-header">
+    <img src="https://i.pravatar.cc/150?img=67" alt="User">
+    <div>
+      <h4>rafi</h4>
+      <span>8 jam lalu</span>
+    </div>
+  </div>
+  
+  <p class="comment-text">bagus web nya ga berat dan enak buat di hp saya ga banyak iklan</p>
+</div>
+</div>
+</section>
     <script>
         // Particle creation with performance optimization
         function createParticles() {
@@ -725,5 +990,29 @@
             createParticles();
         });
     </script>
+    <script>
+window.addEventListener("load", function(){
+  const loader = document.getElementById("loader");
+  setTimeout(() => {
+    loader.style.transition = "opacity 0.5s ease";
+    loader.style.opacity = 0;
+    setTimeout(() => {
+      loader.style.display = "none";
+      document.getElementById("content").style.display = "block";
+    }, 500);
+  }, 5000); // 2000 ms = 2 detik minimal tampil
+});
+const words = ["tikdll", "berkualitas", "bagus", "cepat", "ringan", "no iklan"]; // kata-kata mu di sini
+let i = 0;
+
+function changeWord() {
+  document.getElementById("txt-run").textContent = words[i];
+  i = (i + 1) % words.length; // loop balik ke awal
+}
+
+changeWord(); 
+setInterval(changeWord, 1500);
+
+</script>
 </body>
 </html>
